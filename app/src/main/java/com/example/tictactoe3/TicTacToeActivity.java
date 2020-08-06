@@ -3,8 +3,11 @@ package com.example.tictactoe3;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -23,7 +26,7 @@ public class TicTacToeActivity extends AppCompatActivity {
 
     int [][] winingPostion={
             {0,1,2},{3,4,5},{6,7,8},
-            {0,3,6},{1,4,7},{1,5,8},
+            {0,3,6},{1,4,7},{2,5,8},
             {0,4,8},{2,4,6}
     };
 
@@ -33,6 +36,11 @@ public class TicTacToeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_ground);
+        setRandomPlayer();
+
+    }
+    private void setRandomPlayer()
+    {
         Random randomPlayer = new Random();
         activePlayer = (randomPlayer.nextInt(2));
         Toast.makeText(this, ""+activePlayer, Toast.LENGTH_SHORT).show();
@@ -63,9 +71,12 @@ public class TicTacToeActivity extends AppCompatActivity {
         }
         //Check Winner
         winner = checkWinner();
-        if(winner != NO_WINNER)
+        if(winner != NO_WINNER || filled())
         {
-            Toast.makeText(this, winner+" =Winner : "+ ((winner == KNIFE)? "KNIFE Win":"SHIELD win"), Toast.LENGTH_SHORT).show();
+            String winnerName = (winner ==KNIFE)? "Knife " :
+                    (winner == SHIELD) ? "Shield" : "no Winner";
+
+            Toast.makeText(this, winner+" =Winner : "+ winnerName, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -80,13 +91,74 @@ public class TicTacToeActivity extends AppCompatActivity {
     {
 
       for ( int[] position : winingPostion)
-      { if(     gameState[position[2]] != NOT_PLAYED &&
+      { if(
                   gameState[position[0]] == gameState[position[1]] &&
-                  gameState[position[1]] == gameState[position[2]]         )
+                  gameState[position[1]] == gameState[position[2]] &&
+                          gameState[position[0]] != NOT_PLAYED )
           {
               return gameState[position[0]];
           }
       }
       return  NO_WINNER;
+    }
+
+
+    public boolean filled(){
+        for(int i = 0 ; i < gameState.length ; i++)
+        {
+            if (gameState[i] == NOT_PLAYED)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void reset(){
+        //active Player-------------------------------------------------------Reset
+        setRandomPlayer();
+
+        //winner--------------------------------------------------------------Reset
+        winner = NO_WINNER;
+
+        //game state----------------------------------------------------------Reset
+        for(int i = 0 ; i<gameState.length; i++)
+        {
+            gameState[i]=NOT_PLAYED;
+        }
+
+        //play ground--------------------------------------------------------Reset
+        LinearLayout pgLayout = (LinearLayout) findViewById(R.id.pg_layout);
+        for ( int i = 0 ; i< pgLayout.getChildCount(); i++)
+            {
+          //  Toast.makeText(this, "pg.Layout, ChildCount = "+pgLayout.getChildCount(), Toast.LENGTH_SHORT).show();
+            LinearLayout row = (pgLayout.getChildAt(i) instanceof LinearLayout) ?
+            (LinearLayout) pgLayout.getChildAt(i) : null ;
+
+            if (row == null ) return;
+
+            for(int j = 0 ; j < row.getChildCount(); j++)
+                {
+                    Toast.makeText(this, "iv. = "+row.getChildCount(), Toast.LENGTH_SHORT).show();
+                    ImageView iv = (row.getChildAt(j) instanceof ImageView) ?
+                            (ImageView) row.getChildAt(j) : null ;
+                    if (iv == null ) return;
+                    iv.setImageResource(0);
+                }
+
+            }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("Reset").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                reset();
+                return false;
+            }
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
     }
 }
