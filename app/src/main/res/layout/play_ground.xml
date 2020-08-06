@@ -122,4 +122,59 @@
 
 
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/msg_layout"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:background="#80D8FF"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:visibility="visible"
+        >
+
+        <ImageView
+            android:id="@+id/img_winner"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_below="@id/winner_message"
+            android:layout_centerInParent="true"
+             />
+
+        <TextView
+            android:id="@+id/winner_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textSize="25sp"
+            android:text="Winner"
+            android:textColor="#000000"
+            android:textStyle="bold"
+
+            />
+        <Button
+            android:onClick="reset"
+            android:id="@+id/play_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button"
+            android:text="Play Again"
+            android:textSize="25sp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:padding="4dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+
+
+            />
+
+
+
+
+    </RelativeLayout>
 </RelativeLayout>

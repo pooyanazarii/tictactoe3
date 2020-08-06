@@ -2,12 +2,15 @@ package com.example.tictactoe3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -31,12 +34,15 @@ public class TicTacToeActivity extends AppCompatActivity {
     };
 
     int activePlayer = KNIFE;
+    RelativeLayout msgLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_ground);
         setRandomPlayer();
+        msgLayout = findViewById(R.id.msg_layout);
+        msgLayout.setVisibility(View.GONE);
 
     }
     private void setRandomPlayer()
@@ -70,17 +76,41 @@ public class TicTacToeActivity extends AppCompatActivity {
             activePlayer = KNIFE;
         }
         //Check Winner
+        winnerMsg();
+
+
+
+    }
+
+    private void winnerMsg() {
         winner = checkWinner();
         if(winner != NO_WINNER || filled())
         {
-            String winnerName = (winner ==KNIFE)? "Knife " :
-                    (winner == SHIELD) ? "Shield" : "no Winner";
+            String msg = "";
+            if(winner == NO_WINNER)
+            {
+                msg= "No Winner";
+                msgLayout.setBackgroundColor(Color.argb(220,207,26,52));
+            }else if (winner == KNIFE)
+            {
+                msg = "Knife Player Winner";
+                msgLayout.setBackgroundColor(Color.argb(220,128,215,255));
+                ((ImageView)findViewById(R.id.img_winner)).setImageResource(R.drawable.knife);
 
-            Toast.makeText(this, winner+" =Winner : "+ winnerName, Toast.LENGTH_SHORT).show();
+            }else if(winner == SHIELD)
+            {
+                msg = "Shield Player Winner";
+                msgLayout.setBackgroundColor(Color.argb(220,244,255,129));
+                ((ImageView)findViewById(R.id.img_winner)).setImageResource(R.drawable.shield);
+            }
+
+
+//            String win_MSG = (winner ==KNIFE)? "Knife Won " :
+//                    (winner == SHIELD) ? "Shield Won" :
+//                            (winner == NO_WINNER)? "NO Winner":"Error MSG";
+            ((TextView)msgLayout.findViewById(R.id.winner_message)).setText(msg);
+            msgLayout.setVisibility(View.VISIBLE);
         }
-
-
-
     }
 
 
@@ -114,7 +144,7 @@ public class TicTacToeActivity extends AppCompatActivity {
         return true;
     }
 
-    public void reset(){
+    public void reset(View v){
         //active Player-------------------------------------------------------Reset
         setRandomPlayer();
 
@@ -148,6 +178,9 @@ public class TicTacToeActivity extends AppCompatActivity {
 
             }
 
+        //show layout End----------------------------------------------------------Rest
+        msgLayout.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -155,7 +188,7 @@ public class TicTacToeActivity extends AppCompatActivity {
         menu.add("Reset").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                reset();
+                reset(null);
                 return false;
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
