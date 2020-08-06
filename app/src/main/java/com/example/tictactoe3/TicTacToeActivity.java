@@ -11,7 +11,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tic_tac_toe);
+        setContentView(R.layout.play_ground);
     }
     public void dropIn(View view)
     {
