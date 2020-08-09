@@ -10,13 +10,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
-    RelativeLayout rel;
+    RelativeLayout rel,relMain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rel = findViewById(R.id.lay_about_msg);
         rel.setVisibility(View.GONE);
+        relMain = findViewById(R.id.rel_layout_main);
+
 
     }
 
